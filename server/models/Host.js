@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
     // id:number,
     type:{type:String},     // 类别
-    hostName:{type:String}, // 主机名
-    userName:{type:String}, // 用户名
+    hostname:{type:String}, // 主机名
+    username:{type:String}, // 用户名
     ip:{type:String},       // 主机ip
     port:{type:String},     // 主机端口
     pKey:{type:String},

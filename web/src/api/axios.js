@@ -36,6 +36,7 @@ $axios.interceptors.response.use(
         }
     },
     error => {
+        console.dir(error)
         if(error.response){
             switch(error.response.status){
                 case 401:
@@ -48,6 +49,9 @@ $axios.interceptors.response.use(
                     break;
                 case 404:
                     message.error('网络请求不存在')
+                    break;
+                case 422:
+                    message.error(error.response.data.message)
                     break;
                 default:
                     message.error(error.response.data.status)

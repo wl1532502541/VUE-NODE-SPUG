@@ -45,7 +45,8 @@ export default {
       // })
         state.isFetching = true
         return fetchRecords().then((response)=>{
-          commit('setRecords',[...response.items])
+          // console.log(response)
+          commit('setRecords',response.data)
           let temp = state.records.map((item) => item.type)
           temp = new Set(temp)
           state.types = Array.from(temp)

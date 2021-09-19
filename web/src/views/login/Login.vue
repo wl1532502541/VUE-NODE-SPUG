@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import {message} from 'ant-design-vue'
+import { mapActions } from 'vuex';
 export default {
   name: "Login",
   components: {},
@@ -44,56 +46,31 @@ export default {
   },
   mounted() {
     //  判断浏览器中是否存在有效的token，若存在则切换为已登录状态
-    let token = localStorage.getItem("Authorization");
-    if (token !== "" || token != null) {
-      this.$axios("/auth/check", {
-        token: token,
-      }).then((res) => {
-        if (res.data.code === 200 && res.data.data === true) {
-          this.$store.commit("setIsLogin", true);
-          this.$store.commit("setToken", localStorage.getItem("token"));
-          this.routeTo("/welcome");
-        } else {
-          localStorage.setItem("Authorization", "");
-          this.routeTo("/login");
-        }
-      });
-    } else {
-      this.routeTo("/login");
-    }
+    // let token = localStorage.getItem("Authorization");
+    // if (token !== "" || token != null) {
+    //   this.$axios("/auth/check", {
+    //     token: token,
+    //   }).then((res) => {
+    //     if (res.data.code === 200 && res.data.data === true) {
+    //       this.$store.commit("setIsLogin", true);
+    //       this.$store.commit("setToken", localStorage.getItem("token"));
+    //       this.routeTo("/welcome");
+    //     } else {
+    //       localStorage.setItem("Authorization", "");
+    //       this.routeTo("/login");
+    //     }
+    //   });
+    // } else {
+    //   this.routeTo("/login");
+    // }
   },
   methods: {
+    ...mapActions("user",["_login"]),
     handleSubmit() {
-      this.$store.state.isLogin = true;
-      this.$router.push("/welcome");
-      /*let formData = new FormData();
-      formData.append("username", this.username);
-      formData.append("password", this.password);
-      this.$axios("/auth/login", {
-        method: "post",
-        data: formData
-      }).then(res => {
-        if (res.data.code === 200) {
-          let isAdmin = res.data.data["isAdmin"];
-          let token = res.data.data["token"];
-          let username = res.data.data["username"];
-          // 将token写入localStorage
-          localStorage.setItem("Authorization", token);
-          this.$store.commit("setIsAdmin", isAdmin);
-          this.$store.commit("setIsLogin", true);
-          this.$store.commit("setUsername", username);
-          this.$store.commit("setAuthorization", token);
-          alert("登录成功，即将跳转！");
-          this.routeTo("/home");
-        } else {
-          this.msg = res.data.data;
-          this.showError = true;
-          setTimeout(() => {
-            this.showError = false;
-            this.msg = "";
-          }, 2000);
-        }
-      });*/
+      if(!this.username || !this.password){
+        message.info('请输入账户和密码')
+      }
+      this._login({username:this.username,password:this.password})
     },
     routeTo(path) {
       this.$router.push(path);

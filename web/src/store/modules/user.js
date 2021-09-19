@@ -7,7 +7,7 @@ const state = {
 }
 
 const getters = {
-    token(state){
+    token:(state) => {
         return state.token
     }
 }
@@ -33,9 +33,10 @@ const actions = {
             login(formData)
                 .then(res=>{
                     console.log('login then res',res)
-                    // commit('setToken',)
+                    commit('setToken',res.token)
                     resolve()
                 },error=>{
+                    // console.log(error)
                     reject(error)
                 })
         })
@@ -43,7 +44,7 @@ const actions = {
 }
 
 export default {
-    namespcae:"true",
+    namespaced:"true",
     state,
     getters,
     mutations,
