@@ -68,14 +68,10 @@
             </span>
             <a-menu slot="overlay">
               <a-menu-item>
-                <a href="javascript:;">
                   <a-icon type="user" style="margin-right:10px"/>个人中心
-                </a>
               </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">
+              <a-menu-item  @click="handleLogout()">
                   <a-icon type="logout" style="margin-right:10px"/>退出登陆
-                </a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -90,6 +86,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: "Layout",
   data() {
@@ -167,6 +164,15 @@ export default {
       ],
     };
   },
+  methods:{
+    ...mapActions(['_resetVuex']),
+    ...mapActions('user',['_logout']),
+    handleLogout(){
+      this._logout();
+      this.$router.push('/login')
+      this._resetVuex();
+    }
+  }
 };
 </script>
 

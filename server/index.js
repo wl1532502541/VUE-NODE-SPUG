@@ -2,9 +2,12 @@ const express = require("express")
 
 const app = express()
 
-app.use(require('cors')())
-app.use(express.json())
+app.set('secret','wanglei')
 
+// 跨域
+app.use(require('cors')())
+// 把请求体转换成json对象
+app.use(express.json())
 // 连接数据库
 require('./plugins/db')(app)
 // 登陆接口

@@ -32,7 +32,7 @@ $axios.interceptors.response.use(
         if((code>=200 && code<300) || code ===304 ){
             return Promise.resolve(response.data)
         }else{
-            return Promise.reject(response.statusText)
+            return Promise.reject("来自返回拦截器1",response.statusText)
         }
     },
     error => {

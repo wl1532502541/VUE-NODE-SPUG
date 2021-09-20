@@ -1,18 +1,19 @@
 import $axios from './axios'
 
 const preUrl='/api/rest/host'
-export function fetchRecords(){
+// export function fetchRecords(){
+export function getHosts(){
     // const url = `${preUrl}/filter?filter=&page=0_10&sort=-createTime`
-    const url = `${preUrl}`
+    const url = `${preUrl}s`
     return $axios.get(url)
 }
 
-export function delHost(config){
-    const url = `${preUrl}/delete`
-    return $axios.delete(url,config)
+export function delHostById(id){
+    const url = `${preUrl}`
+    return $axios.delete(url,{params:{id:id}})
 }
 
-export function addHost(data){
-    const url = `${preUrl}/add`
+export function insertOrUpdateHost(data){
+    const url = `${preUrl}`
     return $axios.post(url,data)
 }

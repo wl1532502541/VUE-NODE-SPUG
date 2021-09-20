@@ -1,4 +1,4 @@
-import { delHost, fetchRecords } from "../../api/host"
+import {  delHostById, getHosts } from "../../api/host"
 import { message } from 'ant-design-vue'
 export default {
   namespaced: true,
@@ -26,11 +26,21 @@ export default {
     setRecords(state,data){
       state.records = data
     },
+    resetState(state){
+      stata.records= [],
+      stata.types= [],
+      stata.record= {},
+      stata.isFetching= false,
+      stata.formVisible= false,
+      stata.f_type= "",
+      stata.f_hostName= "",
+      stata.f_ip= ""
+    }
     
   },
   actions: {
     // 获取表格数据
-    _fetchRecords({commit,state}){
+    _getHosts({commit,state}){
       // return new Promise((resolve,reject)=>{
       //   state.isFetching = true
       //   fetchRecords().then((response)=>{
@@ -44,8 +54,7 @@ export default {
       //   }).finally(()=>(state.isFetching = false))
       // })
         state.isFetching = true
-        return fetchRecords().then((response)=>{
-          // console.log(response)
+        return getHosts().then((response)=>{
           commit('setRecords',response.data)
           let temp = state.records.map((item) => item.type)
           temp = new Set(temp)
@@ -53,8 +62,8 @@ export default {
         }).finally(()=>(state.isFetching = false))
     },
     // 删除主机
-    _delHost({dispatch},config){
-      return delHost(config).then(()=>{
+    _delHostById({dispatch},config){
+      return delHostById(config).then(()=>{
         message.success("删除成功")
         dispatch('_fetchRecords')
       })

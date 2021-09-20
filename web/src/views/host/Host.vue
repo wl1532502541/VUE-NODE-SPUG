@@ -32,7 +32,7 @@
         <Form />
       </div>
       <a-spin :spinning="isFetching">
-        <a-table :columns="columns" :data-source="data" rowKey="id" tableLayout="fixed">
+        <a-table :columns="columns" :data-source="data" rowKey="_id" tableLayout="fixed">
           <a slot="name" slot-scope="text">{{ text }}</a>
           <span slot="customTitle"> 类别</span>
           <span slot="action" slot-scope="record">
@@ -59,7 +59,7 @@ export default {
   name: "Host",
   components: { SearchForm, SearchFormItem, Form },
   created() {
-    this._fetchRecords();
+    this._getHosts();
   },
   data() {
     return {
@@ -97,10 +97,10 @@ export default {
   },
   methods: {
     ...mapMutations("host", ["showForm"]),
-    ...mapActions("host",["_fetchRecords","_delHost"]),
+    ...mapActions("host",["_getHosts","_delHostById"]),
     //刷新按钮
     clickRefresh: function() {
-      this._fetchRecords();
+      this._getHosts();
     },
     //上传确定按钮
     handleChange(info) {
@@ -119,7 +119,7 @@ export default {
         title: "删除确认",
         content:h => <div style="color:red;">删除不可撤回，确定要删除【{text["hostName"]}】？</div>,
         onOk: () => {
-          this._delHost({params:{id:text.id}})
+          this._delHostById(text.id)
         },
       });
     },

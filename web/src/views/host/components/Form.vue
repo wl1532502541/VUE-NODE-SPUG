@@ -69,7 +69,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
-import { addHost } from "@/api/host";
+import { insertOrUpdateHost } from "@/api/host";
 // import http from "../../../libs/http";
 export default {
   data() {
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     ...mapMutations("host", ["closeForm"]),
-    ...mapActions("host", ["_fetchRecords"]),
+    ...mapActions("host", ["_getHosts"]),
     handleSubmit() {
       let message = this.$message;
       this.loading = true;
@@ -96,9 +96,9 @@ export default {
           formData["id"] = this.record.id;
           const file = this.fileList[0];
           if (file && file.data) formData["pkey"] = file.data;
-          addHost(formData).then(
+          insertOrUpdateHost(formData).then(
             (res) => {
-              console.log("addHost res", res);
+              console.log("insertOrUpdateHost res", res);
               if (res === "auth fail") {
                 if (formData.pkey) {
                   message.error("独立密钥认证失败");
@@ -113,7 +113,7 @@ export default {
                 }
               } else {
                 message.success("操作成功");
-                this._fetchRecords();
+                this._getHosts();
                 this.closeForm(() => this.form.resetFields());
               }
             },

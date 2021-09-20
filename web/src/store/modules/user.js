@@ -24,22 +24,35 @@ const mutations = {
     },
     setName(state,val){
         state.userName = val
-    }
+    },
+
 }
 
 const actions = {
     _login({commit},formData){
-        return new Promise((resolve,reject)=>{
-            login(formData)
+        // return new Promise((resolve,reject)=>{
+        //     login(formData)
+        //         .then(res=>{
+        //             console.log('login then res',res)
+        //             commit('setToken',res.token)
+        //             resolve()
+        //         },error=>{
+        //             console.log("login error",error)
+        //             reject()
+        //         })
+        // })
+        return login(formData)
                 .then(res=>{
                     console.log('login then res',res)
                     commit('setToken',res.token)
-                    resolve()
                 },error=>{
-                    // console.log(error)
-                    reject(error)
+                    console.log("login error",error)
+                    throw error
                 })
-        })
+    },
+    _logout({commit}){
+        commit('delToken')
+        console.log('token已被清除')
     }
 }
 

@@ -70,7 +70,8 @@ export default {
       if(!this.username || !this.password){
         message.info('请输入账户和密码')
       }
-      this._login({username:this.username,password:this.password})
+      this._login({username:this.username,password:this.password}).then(()=>{this.$router.push('/welcome')})
+      
     },
     routeTo(path) {
       this.$router.push(path);

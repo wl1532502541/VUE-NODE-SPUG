@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    // id:number,
     type:{type:String},     // 类别
     hostname:{type:String}, // 主机名
     username:{type:String}, // 用户名

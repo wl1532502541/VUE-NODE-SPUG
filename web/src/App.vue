@@ -3,16 +3,6 @@
 </template>
 <script>
 export default {
-  created(){
-    console.log(1)
-  },
-  computed:{
-    // isLogin(){return this.$store.state.isLogin}
-  },
-  data() {
-    return {
-    };
-  }
 };
 </script>
 <style lang="scss">
