@@ -1,5 +1,5 @@
 <template>
-  <a-modal :title="record.id ? '编辑主机' : '新建主机'" :visible="formVisible" :confirm-loading="loading" ok-text="确定" cancel-text="取消" @ok="handleSubmit()" @cancel="handleCloseForm()" width="800px" :maskClosable="false">
+  <a-modal :title="record._id ? '编辑主机' : '新建主机'" :visible="formVisible" :confirm-loading="loading" ok-text="确定" cancel-text="取消" @ok="handleSubmit()" @cancel="handleCloseForm()" width="800px" :maskClosable="false">
     <a-form layout="horizontal" :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }" :form="form">
       <a-form-item label="主机类别">
         <a-col :span="14">
@@ -19,16 +19,16 @@
       </a-form-item>
       <a-form-item label="主机名称">
         <a-input placeholder="请输入主机名称" v-decorator="[
-            'hostName',
-            { rules: [{ required: true }], initialValue: record.hostName },
+            'hostname',
+            { rules: [{ required: true }], initialValue: record.hostname },
           ]">
         </a-input>
       </a-form-item>
       <a-form-item required label="连接地址" style="margin-bottom: 0">
         <a-form-item style="display: inline-block; width: 30%">
           <a-input v-decorator="[
-              'userName',
-              { rules: [{ required: true }], initialValue: record.userName },
+              'username',
+              { rules: [{ required: true }], initialValue: record.username },
             ]" addon-before="ssh" placeholder="用户名">
           </a-input>
         </a-form-item>
@@ -55,7 +55,7 @@
         </a-upload>
       </a-form-item>
       <a-form-item label="备注信息">
-        <a-textarea v-decorator="['remarks']" :rows="2" placeholder="请输入主机备注信息">
+        <a-textarea v-decorator="['desc',{initialValue: record.desc }]" :rows="2" placeholder="请输入主机备注信息">
         </a-textarea>
       </a-form-item>
       <a-form-item :wrapper-col="{ offset: 4 }">
@@ -93,10 +93,9 @@ export default {
         if (!err) {
           // const formData = this.form.getFieldsValue();
           const formData = values;
-          formData["id"] = this.record.id;
           const file = this.fileList[0];
           if (file && file.data) formData["pkey"] = file.data;
-          insertOrUpdateHost(formData).then(
+          insertOrUpdateHost(this.record._id,formData).then(
             (res) => {
               console.log("insertOrUpdateHost res", res);
               if (res === "auth fail") {

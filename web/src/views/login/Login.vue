@@ -69,8 +69,11 @@ export default {
     handleSubmit() {
       if(!this.username || !this.password){
         message.info('请输入账户和密码')
+      }else{
+        this._login({username:this.username,password:this.password})
+          .then(()=>{this.$router.push('/welcome')})
       }
-      this._login({username:this.username,password:this.password}).then(()=>{this.$router.push('/welcome')})
+      
       
     },
     routeTo(path) {

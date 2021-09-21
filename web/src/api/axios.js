@@ -14,7 +14,7 @@ Vue.prototype.$http = axios // 并发请求
 // 请求拦截器
 $axios.interceptors.request.use(
     config => {
-        const token = store.getters.token
+        const token = store.getters['user/token']
         if(token){
             config.headers.Authorization = token
         }
@@ -43,7 +43,7 @@ $axios.interceptors.response.use(
                     // 会话过期，要重新登陆
                     message.error('会话过期，重新登陆')
                     store.commit('delToken')
-                    router.replace({
+                    router.push({
                         path:'/login'
                     })
                     break;

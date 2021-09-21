@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     ...mapMutations("host", ["showForm"]),
-    ...mapActions("host",["_getHosts","_delHostById"]),
+    ...mapActions("host",["_getHosts","_delHostById","_getHosts"]),
     //刷新按钮
     clickRefresh: function() {
       this._getHosts();
@@ -119,7 +119,8 @@ export default {
         title: "删除确认",
         content:h => <div style="color:red;">删除不可撤回，确定要删除【{text["hostName"]}】？</div>,
         onOk: () => {
-          this._delHostById(text.id)
+          this._delHostById(text._id)
+          this._getHosts();
         },
       });
     },
@@ -148,9 +149,9 @@ const columns = [
   },
   {
     title: "主机名称",
-    dataIndex: "hostName",
-    key: "hostName",
-    sorter: (a, b) => a.hostName - b.hostName,
+    dataIndex: "hostname",
+    key: "hostname",
+    sorter: (a, b) => a.hostname - b.hostname,
   },
   {
     title: "连接地址",
@@ -167,8 +168,8 @@ const columns = [
   },
   {
     title: "备注信息",
-    key: "remarks",
-    dataIndex: "remarks",
+    key: "desc",
+    dataIndex: "desc",
   },
   {
     title: "操作",

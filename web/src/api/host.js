@@ -8,12 +8,18 @@ export function getHosts(){
     return $axios.get(url)
 }
 
-export function delHostById(id){
-    const url = `${preUrl}`
-    return $axios.delete(url,{params:{id:id}})
+export function delHostById(_id){
+    const url = `${preUrl}/${_id}`
+    return $axios.delete(url)
 }
 
-export function insertOrUpdateHost(data){
+export function insertOrUpdateHost(_id,data){
     const url = `${preUrl}`
-    return $axios.post(url,data)
+    if(_id){
+        console.log("update host, _id:", _id)
+        return $axios.put(url+'/'+_id,data)
+    }else{
+        console.log("put host, data:", data)
+        return $axios.post(url,data)
+    }
 }

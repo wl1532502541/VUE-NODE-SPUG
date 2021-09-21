@@ -15,14 +15,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     NProgress.start()
     if(to.path=="/login"){
-        if(store.getters['user/token']){
-            console.log('router/index','有token所以路由重定向回home')
-            next({
-                path:'/home'
-            })
-        }else{
+        // if(store.getters['user/token']){
+        //     console.log('router/index','有token所以路由重定向回home')
+        //     next({
+        //         path:'/home'
+        //     })
+        // }else{
             next()
-        }
+        // }
     }
     next()
 })
