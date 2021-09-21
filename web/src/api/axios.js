@@ -16,7 +16,7 @@ $axios.interceptors.request.use(
     config => {
         const token = store.getters['user/token']
         if(token){
-            config.headers.Authorization = token
+            config.headers.Authorization = 'Bearer ' + token
         }
         return config
     },
@@ -42,7 +42,7 @@ $axios.interceptors.response.use(
                 case 401:
                     // 会话过期，要重新登陆
                     message.error('会话过期，重新登陆')
-                    store.commit('delToken')
+                    store.commit('user/delToken')
                     router.push({
                         path:'/login'
                     })
