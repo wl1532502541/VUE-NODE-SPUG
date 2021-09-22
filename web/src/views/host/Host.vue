@@ -84,7 +84,7 @@ export default {
       }
       if (this.f_hostName) {
         data = data.filter((item) =>
-          item["hostName"].toLowerCase().includes(this.f_hostName.toLowerCase())
+          item["hostname"].toLowerCase().includes(this.f_hostName.toLowerCase())
         );
       }
       if (this.f_ip) {
@@ -126,7 +126,7 @@ export default {
     },
     //Console按钮
     handleConsole(record){
-      window.open(`/ssh/${record.id}`)
+      window.open(`/ssh/${record._id}`)
     }
   },
 };

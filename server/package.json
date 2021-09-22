@@ -14,9 +14,13 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^5.0.0-alpha.8",
+    "express-ws": "^5.0.2",
     "http-assert": "^1.5.0",
     "inflection": "^1.13.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.5"
+    "mongoose": "^6.0.5",
+    "ospath": "^1.2.2",
+    "ssh2": "^1.4.0",
+    "utf8": "^3.0.0"
   }
 }

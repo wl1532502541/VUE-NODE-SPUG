@@ -17,6 +17,7 @@ export default {
     //显示表格
     showForm(state, info = {}) {
       state.record = info
+      console.log("info",info)
       state.formVisible = true
     },
     closeForm(state, callback) {
@@ -56,6 +57,7 @@ export default {
         state.isFetching = true
         return getHosts().then((response)=>{
           commit('setRecords',response.data)
+          console.log(response.data)
           let temp = state.records.map((item) => item.type)
           temp = new Set(temp)
           state.types = Array.from(temp)

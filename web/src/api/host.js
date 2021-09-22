@@ -8,6 +8,11 @@ export function getHosts(){
     return $axios.get(url)
 }
 
+export function getHost(_id){
+    const url = `${preUrl}/${_id}`
+    return $axios.get(url)
+}
+
 export function delHostById(_id){
     const url = `${preUrl}/${_id}`
     return $axios.delete(url)

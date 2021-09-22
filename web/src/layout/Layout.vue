@@ -2,7 +2,11 @@
   <a-layout id="components-layout-demo-side" style="min-height: 100vh">
     <!-- 侧边栏 -->
     <a-layout-sider v-model="collapsed" collapsible :trigger="null">
-      <div class="logo" />
+      <div class="logo" >
+        <img src="./logo-spug.png" alt="logo-spug">
+        <img src="./logo-text.png" alt="logo-text">
+        <span style="color: rgba(24,155, 255);margin-left:5px">(仿)</span>
+      </div>
       <a-menu theme="dark" :default-selected-keys="['1']" mode="inline" :defaultSelectedKeys="[$route.path]" :selectedKeys="[$route.path]">
         <!-- 工作台 主机管理 -->
         <a-menu-item v-for="route in routers.slice(0, 2)" :key="route.path" @click="$router.push(route.path)">
@@ -176,7 +180,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .right {
   float: right;
   height: 100%;
@@ -189,5 +193,30 @@ export default {
 }
 .action:hover {
   background-color: rgb(233, 247, 254);
+}
+
+#components-layout-demo-side .logo {
+  height: 64px;
+  overflow: auto;
+  line-height: 64px;
+  padding-left:10px;
+  img{
+    width: 50px;
+    &:nth-child(2){
+      margin-left: 25px;
+      width:70px
+    }
+  }
+}
+
+#components-layout-demo-side .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+#components-layout-demo-side .trigger:hover {
+  color: #1890ff;
 }
 </style>

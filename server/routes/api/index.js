@@ -30,7 +30,7 @@ module.exports = app =>{
     router.put('/:id',async(req,res) => {
         try{
             // 这里的new:true 代表返回更新后的值，它默认很奇葩返回更新前的
-            const model = await req.Model.findOneAndUpdate(req.params.id,req.body,{new:true})
+            const model = await req.Model.findOneAndUpdate({_id:req.params.id},req.body,{new:true})
             console.log("更新_id:",req.params,"内容:",req.body)
             res.send(model)
         }catch(error){

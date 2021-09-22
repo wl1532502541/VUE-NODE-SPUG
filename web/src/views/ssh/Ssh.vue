@@ -10,7 +10,7 @@ import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 // import http from "../../libs/http";
-import {fetch} from "@/api/ssh"
+import {getHost} from "@/api/host"
 export default {
   name: "Ssh",
   // props: {
@@ -26,36 +26,22 @@ export default {
       id: this.$route.params.id,
       host: null,
       socket: null,
-      // terminalSocket: null
     };
   },
   methods: {
-    // runRealTerminal () {
-    //   console.log('webSocket is finished')
-    // },
-    // errorRealTerminal () {
-    //   console.log('error')
-    // },
-    // closeRealTerminal () {
-    //   console.log('close')
-    // },
     _fetch() {
-      fetch({params:{id:this.id}}).then((res)=>{
+      getHost(this.id).then((res)=>{
         console.log('_fetch 得到主机信息：',res);
-        document.title = res.hostName;
+        document.title = res.hostname;
         this.host = res
       })
-      // http.get(`/host/get?id=${this.id}`).then((res) => {
-      //   console.log("_fetch", res);
-      //   document.title = res.hostName;
-      //   this.host = res;
-      // });
     },
     _read_as_text(data) {
       console.log("收到信息：",data)
-      const reader = new window.FileReader();
-      reader.onload = () => this.term.write(reader.result);
-      reader.readAsText(data, "utf-8");
+      // const reader = new window.FileReader();
+      // reader.onload = () => this.term.write(reader.result);
+      // reader.readAsText(data, "utf-8");
+      this.term.write(data)
     },
   },
   mounted() {
@@ -65,13 +51,21 @@ export default {
     const fitPlugin = new FitAddon();
     console.log(this.container);
     this.term.loadAddon(fitPlugin);
+    this.term.write('connecting')
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     this.socket = new WebSocket(
       // `${protocol}//${window.location.host}/ws/ssh/${this.id}`
       // `${protocol}//${window.location.host}/ws/ssh`
-      `${protocol}//localhost:8081/ws/ssh/${this.id}`
+      `${protocol}//localhost:3000/ssh/${this.id}`
     );
-    this.socket.onmessage = (e) => this._read_as_text(e.data);
+    let interval = setInterval(()=>{
+      this.term.write('.')
+    },1000)
+    this.socket.onmessage = (e) => {
+      clearInterval(interval)
+      console.log("e",e)
+      this._read_as_text(e.data);
+    }
     this.socket.onopen = () => {
       this.term.open(this.container);
       this.term.focus();
@@ -85,7 +79,7 @@ export default {
         setTimeout(() => this.term.write("\r\nConnection is closed.\r\n"), 200);
       }
     };
-    this.term.onData((data) => this.socket.send(JSON.stringify({ data })));
+    this.term.onData((data) => this.socket.send(data));
     this.term.onResize(({ cols, rows }) => {
       this.socket.send(JSON.stringify({ resize: [cols, rows] }));
     });

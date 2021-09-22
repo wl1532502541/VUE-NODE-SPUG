@@ -14,6 +14,8 @@ require('./plugins/db')(app)
 require('./routes/api/login')(app)
 // 后台管理 crud 接口
 require('./routes/api')(app)
+// ws ssh接口
+require('./routes/ssh')(app)
 
 
 // 监听服务器其他错误
