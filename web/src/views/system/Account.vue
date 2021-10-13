@@ -1,77 +1,75 @@
 <template>
-  <a-layout-content style="padding:24px;minHeight:280px ">
-    <a-card>
-      <a-form
-          layout="horizontal"
-          :label-col="{ span:4}"
-          :wrapper-col="{ span: 18 , offset: 1}"
-      >
-        <a-row :gutter="48">
-          <a-col :sm="24" :md="6">
-            <a-form-item label="账户名称：">
-              <a-input placeholder="请输入">
+  <a-card>
+    <a-form
+        layout="horizontal"
+        :label-col="{ span:4}"
+        :wrapper-col="{ span: 18 , offset: 1}"
+    >
+      <a-row :gutter="48">
+        <a-col :sm="24" :md="6">
+          <a-form-item label="账户名称：">
+            <a-input placeholder="请输入">
 
-              </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :sm="24" :md="6">
-            <a-form-item label="账户状态：">
-              <a-select placeholder="请选择">
-                <a-select-option value="1">
-                  1
-                </a-select-option>
-                <a-select-option value="2">
-                  Web服务
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :sm="24" :md="6">
-            <a-form-item>
-              <a-button type="primary" @click="clickRefresh">
-                <a-icon type="sync"></a-icon>
-                刷新
-              </a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <div style="margin: 0 0 16px">
-        <a-button type="primary" @click="setVisible(newAccount,true)">
-          <a-icon type="plus"></a-icon>
-          新建
-        </a-button>
-        <a-modal
-            title="新建账户"
-            :visible="newAccount.visible"
-            :confirm-loading="newAccount.confirmLoading"
-            ok-text="确定"
-            cancel-text="取消"
-            @ok="handleOk(newAccount)"
-            @cancel="setVisible(newAccount,false)"
-            width="800px"
-        >
-          s
-        </a-modal>
-      </div>
-      <a-spin :spinning="spinning">
-        <a-table :columns="columns" :data-source="data">
-          <a slot="name" slot-scope="text">{{ text }}</a>
-          <span slot="customTitle"> 类别</span>
-          <span slot="action">
-            <a @click="showDisable">禁用</a>
-            <a-divider type="vertical" />
-            <a>编辑</a>
-            <a-divider type="vertical" />
-            <a @click="showResetPwd">重置密码</a>
-            <a-divider type="vertical" />
-            <a @click="showDelete">删除</a>
-            <a-divider type="vertical" />
-          </span>
-        </a-table>
-      </a-spin>
-    </a-card>
-  </a-layout-content>
+            </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :sm="24" :md="6">
+          <a-form-item label="账户状态：">
+            <a-select placeholder="请选择">
+              <a-select-option value="1">
+                1
+              </a-select-option>
+              <a-select-option value="2">
+                Web服务
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :sm="24" :md="6">
+          <a-form-item>
+            <a-button type="primary" @click="clickRefresh">
+              <a-icon type="sync"></a-icon>
+              刷新
+            </a-button>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-form>
+    <div style="margin: 0 0 16px">
+      <a-button type="primary" @click="setVisible(newAccount,true)">
+        <a-icon type="plus"></a-icon>
+        新建
+      </a-button>
+      <a-modal
+          title="新建账户"
+          :visible="newAccount.visible"
+          :confirm-loading="newAccount.confirmLoading"
+          ok-text="确定"
+          cancel-text="取消"
+          @ok="handleOk(newAccount)"
+          @cancel="setVisible(newAccount,false)"
+          width="800px"
+      >
+        s
+      </a-modal>
+    </div>
+    <a-spin :spinning="spinning">
+      <a-table :columns="columns" :data-source="data">
+        <a slot="name" slot-scope="text">{{ text }}</a>
+        <span slot="customTitle"> 类别</span>
+        <span slot="action">
+          <a @click="showDisable">禁用</a>
+          <a-divider type="vertical" />
+          <a>编辑</a>
+          <a-divider type="vertical" />
+          <a @click="showResetPwd">重置密码</a>
+          <a-divider type="vertical" />
+          <a @click="showDelete">删除</a>
+          <a-divider type="vertical" />
+        </span>
+      </a-table>
+    </a-spin>
+  </a-card>
 </template>
 
 <script>

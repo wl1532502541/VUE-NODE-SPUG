@@ -2,7 +2,7 @@ import {login} from '@/api/login'
 
 const state = {
     token:localStorage.getItem('token')?localStorage.getItem('token'):'',
-    userName:'管理员',
+    // userName:'管理员',
     // roles:[],    //权限列表 后期要做角色权限管理再用
 }
 
@@ -45,6 +45,7 @@ const actions = {
                 .then(res=>{
                     console.log('login then res',res)
                     commit('setToken',res.token)
+                    localStorage.setItem('nickname',res.nickname)
                 },error=>{
                     console.log("login error",error)
                     throw error

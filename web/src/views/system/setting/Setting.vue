@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding:24px 24px 0;">
+  <!-- <a-layout-content style="padding:24px 24px 0;"> -->
       <div class="container">
         <div class="left">
           <a-menu
@@ -22,7 +22,7 @@
         </div>
       </div>
           
-  </a-layout-content>
+  <!-- </a-layout-content> -->
 </template>
 
 <script>

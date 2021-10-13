@@ -19,7 +19,8 @@ module.exports = app => {
         const token = jwt.sign({ id: user._id},app.get('secret'))
         res.send({
             message: '登陆成功',
-            token
+            token,
+            nickname: user.nickname
         })
     })
 }

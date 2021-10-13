@@ -1,11 +1,9 @@
 <template>
-  <a-layout-content style="padding:24px 24px 0;">
-    <a-card>
-      <span>
-        Welcome
-      </span>
-    </a-card>
-  </a-layout-content>
+  <a-card>
+    <span>
+      Welcome
+    </span>
+  </a-card>
 </template>
 
 <script>

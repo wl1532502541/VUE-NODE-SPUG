@@ -3,6 +3,9 @@ module.exports = (app) => {
     const expressWs = require('express-ws')(app)
     const utf8 = require('utf8')
     const fs = require('fs')
+    
+    // 登陆验证中间件
+    const auth = require("../../middleware/sshValidateMiddleWare")
 
     const createNewServer = (machineConfig, socket) => {
         const ssh = new Client();
@@ -26,6 +29,7 @@ module.exports = (app) => {
 
                 // 关闭连接
                 }).on('close', () => {
+                    console.log('ssh end')
                     ssh.end();
                 });
             })
@@ -47,8 +51,9 @@ module.exports = (app) => {
         })
     }
 
-    app.ws('/ssh/:id',async function(ws, req){
+    app.ws('/ssh/:id',auth(app),async function(ws, req){
         const _id = req.params.id
+        // console.log('111',req._parsedUrl)
         const Host = require('../../models/Host')
         const host = await Host.findById(_id)
         // console.log(fs.readFileSync('c:/users/wl/.ssh/id_rsa',{encoding:'utf8'}))

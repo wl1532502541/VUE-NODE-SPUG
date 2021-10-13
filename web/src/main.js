@@ -7,7 +7,7 @@ import 'ant-design-vue/dist/antd.css'
 import axios from "axios"
 import VueAxios from "vue-axios"
 
-axios.defaults.baseURL='http://localhost:8081'
+// axios.defaults.baseURL='http://localhost:8081'
 
 Vue.use(VueAxios, axios);
 Vue.use(Antd);

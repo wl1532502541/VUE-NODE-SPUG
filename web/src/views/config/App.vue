@@ -1,51 +1,42 @@
 <template>
-  <a-layout-content style="padding:24px;minHeight:280px ">
-    <div id="components-form-demo-advanced-search">
-      <a-form class="ant-advanced-search-form" :form="form" @submit="handleSearch">
-        <a-row :gutter="24">
-          <a-col
-              v-for="i in 10"
-              :key="i"
-              :span="8"
-              :style="{ display: i < count ? 'block' : 'none' }"
-          >
-            <a-form-item :label="`Field ${i}`">
-              <a-input
-                  v-decorator="[
-                `field-${i}`,
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Input something!',
-                    },
-                  ],
-                },
-              ]"
-                  placeholder="placeholder"
-              />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="24" :style="{ textAlign: 'right' }">
-            <a-button type="primary" html-type="submit">
-              Search
-            </a-button>
-            <a-button :style="{ marginLeft: '8px' }" @click="handleReset">
-              Clear
-            </a-button>
-            <a :style="{ marginLeft: '8px', fontSize: '12px' }" @click="toggle">
-              Collapse <a-icon :type="expand ? 'up' : 'down'" />
-            </a>
-          </a-col>
-        </a-row>
-      </a-form>
-      <div class="search-result-list">
-        Search Result List
-      </div>
+  <div id="components-form-demo-advanced-search">
+    <a-form class="ant-advanced-search-form" :form="form" @submit="handleSearch">
+      <a-row :gutter="24">
+        <a-col v-for="i in 10" :key="i" :span="8" :style="{ display: i < count ? 'block' : 'none' }">
+          <a-form-item :label="`Field ${i}`">
+            <a-input v-decorator="[
+              `field-${i}`,
+              {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Input something!',
+                  },
+                ],
+              },
+            ]" placeholder="placeholder" />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24" :style="{ textAlign: 'right' }">
+          <a-button type="primary" html-type="submit">
+            Search
+          </a-button>
+          <a-button :style="{ marginLeft: '8px' }" @click="handleReset">
+            Clear
+          </a-button>
+          <a :style="{ marginLeft: '8px', fontSize: '12px' }" @click="toggle">
+            Collapse
+            <a-icon :type="expand ? 'up' : 'down'" />
+          </a>
+        </a-col>
+      </a-row>
+    </a-form>
+    <div class="search-result-list">
+      Search Result List
     </div>
-  </a-layout-content>
+  </div>
 </template>
 
 <script>
@@ -53,7 +44,7 @@ export default {
   data() {
     return {
       expand: false,
-      form: this.$form.createForm(this, { name: 'advanced_search' }),
+      form: this.$form.createForm(this, { name: "advanced_search" }),
     };
   },
   computed: {
@@ -62,14 +53,14 @@ export default {
     },
   },
   updated() {
-    console.log('updated');
+    console.log("updated");
   },
   methods: {
     handleSearch(e) {
       e.preventDefault();
       this.form.validateFields((error, values) => {
-        console.log('error', error);
-        console.log('Received values of form: ', values);
+        console.log("error", error);
+        console.log("Received values of form: ", values);
       });
     },
 
@@ -80,8 +71,8 @@ export default {
     toggle() {
       this.expand = !this.expand;
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

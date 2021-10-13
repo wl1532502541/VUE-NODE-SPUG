@@ -1,53 +1,51 @@
 <template>
-  <a-layout-content style="padding:24px;minHeight:280px ">
-    <a-card>
-      <a-form
-          layout="horizontal"
-          :label-col="{ flex:'75px'  }"
-          :wrapper-col="{ flex:'auto' }"
-      >
-        <a-row :gutter="12">
+  <a-card>
+    <a-form
+        layout="horizontal"
+        :label-col="{ flex:'75px'  }"
+        :wrapper-col="{ flex:'auto' }"
+    >
+      <a-row :gutter="12">
 
-          <a-col :sm="24" :md="6">
-            <a-form-item label="任务名称：" style="display: flex">
-              <a-input placeholder="请输入"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :sm="24" :md="6">
-            <a-form-item>
-              <a-button type="primary" @click="clickRefresh">
-                <a-icon type="sync"></a-icon>
-                刷新
-              </a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <a-spin :spinning="spinning">
-        <a-table :columns="columns" :data-source="data">
-          <a slot="name" slot-scope="text">{{ text }}</a>
-          <span slot="customTitle"> 任务名称</span>
-          <span slot="updateTime" slot-scope="updateTime">{{ updateTime.toLocaleString() }}</span>
-          <span slot="tags" slot-scope="tags">
-            <a-tag
-                v-for="tag in tags"
-                :key="tag"
-                :color="
-                tag == '正常' ? 'green' : tag=='异常' ? 'red':tag=='报警发生'?'yellow':'blue'
-                /*tag === 'loser'
-                ? 'volcano'
-                : tag.length > 5
-                ? 'geekblue'
-                : 'green'*/
-              "
-            >
-              {{ tag.toUpperCase() }}
-            </a-tag>
-          </span>
-        </a-table>
-      </a-spin>
-    </a-card>
-  </a-layout-content>
+        <a-col :sm="24" :md="6">
+          <a-form-item label="任务名称：" style="display: flex">
+            <a-input placeholder="请输入"> </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :sm="24" :md="6">
+          <a-form-item>
+            <a-button type="primary" @click="clickRefresh">
+              <a-icon type="sync"></a-icon>
+              刷新
+            </a-button>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-form>
+    <a-spin :spinning="spinning">
+      <a-table :columns="columns" :data-source="data">
+        <a slot="name" slot-scope="text">{{ text }}</a>
+        <span slot="customTitle"> 任务名称</span>
+        <span slot="updateTime" slot-scope="updateTime">{{ updateTime.toLocaleString() }}</span>
+        <span slot="tags" slot-scope="tags">
+          <a-tag
+              v-for="tag in tags"
+              :key="tag"
+              :color="
+              tag == '正常' ? 'green' : tag=='异常' ? 'red':tag=='报警发生'?'yellow':'blue'
+              /*tag === 'loser'
+              ? 'volcano'
+              : tag.length > 5
+              ? 'geekblue'
+              : 'green'*/
+            "
+          >
+            {{ tag.toUpperCase() }}
+          </a-tag>
+        </span>
+      </a-table>
+    </a-spin>
+  </a-card>
 </template>
 
 <script>

@@ -1,73 +1,91 @@
 <template>
   <div class="container">
-    <div class="terminal">
-      <div ref="terminal" />
+    <div class="header">
+      <div>{{host.hostname}} | {{host.username}}@{{host.ip}}:{{host.port}}</div>
+      <a-button type="primary" icon="folder-open" @click="handleShow()">文件管理器</a-button>
     </div>
+    <div class="terminal">
+      <div ref="terminal_container" />
+    </div>
+    <FileManager :id="id" :visible="fileVisible" :onClose="handleShow" />
   </div>
 </template>
 <script>
 import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
-// import http from "../../libs/http";
-import {getHost} from "@/api/host"
+import { getHost } from "@/api/host"
+import FileManager from './components/FileManager.vue'
 export default {
   name: "Ssh",
-  // props: {
-  //   terminal: {
-  //     type: Object,
-  //     default: {}
-  //   }
-  // },
-  data() {
+  components: {
+    FileManager
+  },
+  data () {
     return {
       term: new Terminal(),
       container: null,
       id: this.$route.params.id,
-      host: null,
+      host: {},
       socket: null,
+      fileVisible: false
     };
   },
   methods: {
-    _fetch() {
-      getHost(this.id).then((res)=>{
-        console.log('_fetch 得到主机信息：',res);
+    _fetch () {
+      console.log('_fetch')
+      getHost(this.id).then((res) => {
+        console.log('_fetch 得到主机信息：', res);
         document.title = res.hostname;
         this.host = res
       })
     },
-    _read_as_text(data) {
-      console.log("收到信息：",data)
+    _read_as_text (data) {
+      console.log("收到信息：", data)
       // const reader = new window.FileReader();
       // reader.onload = () => this.term.write(reader.result);
       // reader.readAsText(data, "utf-8");
       this.term.write(data)
     },
+    handleShow () {
+      this.fileVisible = !this.fileVisible
+    }
   },
-  mounted() {
-    console.log(this.id)
-    this.container = this.$refs.terminal;
+  created () {
     this._fetch();
+  },
+  mounted () {
+    console.log(this.id)
+    console.log("host", this.host)
+    this.container = this.$refs.terminal_container;
+    // this._fetch();
     const fitPlugin = new FitAddon();
-    console.log(this.container);
     this.term.loadAddon(fitPlugin);
-    this.term.write('connecting')
+    this.term.write('connecting...')
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     this.socket = new WebSocket(
       // `${protocol}//${window.location.host}/ws/ssh/${this.id}`
-      // `${protocol}//${window.location.host}/ws/ssh`
-      `${protocol}//localhost:3000/ssh/${this.id}`
+      // `${protocol}//localhost:3000/ssh/${this.id}?token=${this.$store.getters['user/token']}`
+      `${protocol}//localhost:3000/ssh/${this.id}?token=${localStorage.getItem('token')}`
     );
-    let interval = setInterval(()=>{
+    // console.log('token',this.$store.getters['user/token'])
+    let interval = setInterval(() => {
       this.term.write('.')
-    },1000)
+    }, 1000)
     this.socket.onmessage = (e) => {
-      clearInterval(interval)
-      console.log("e",e)
+      if (interval) {
+        clearInterval(interval)
+        interval = null
+        this.term.write('\r\n')
+      }
+      console.log("e", e)
       this._read_as_text(e.data);
     }
     this.socket.onopen = () => {
+      console.log("成功建立socket连接")
+      // this.container = this.$refs.terminal_container;
       this.term.open(this.container);
+      // this.term.open(document.getElementById('terminal_container'))
       this.term.focus();
       fitPlugin.fit();
     };
@@ -80,12 +98,11 @@ export default {
       }
     };
     this.term.onData((data) => this.socket.send(data));
-    this.term.onResize(({ cols, rows }) => {
-      this.socket.send(JSON.stringify({ resize: [cols, rows] }));
-    });
+    // this.term.onResize(({ cols, rows }) => {
+    //   this.socket.send(JSON.stringify({ resize: [cols, rows] }));
+    // });
     window.onresize = () => fitPlugin.fit();
 
-    
   },
 };
 </script>
@@ -102,7 +119,16 @@ export default {
   background-color: #000;
   padding-left: 5px;
 }
-.terminal > div {
+/* .terminal > div {
   flex: 1;
+} */
+
+.header {
+  height: 46px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  background-color: #e6f7ff;
 }
 </style>

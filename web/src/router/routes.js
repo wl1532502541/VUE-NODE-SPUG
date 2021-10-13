@@ -25,6 +25,10 @@ const viewsRoutes=[
         name:"welcome",
         component:()=>import("@/views/welcome/Welcome")
       },
+      {
+        path:"welcome/info",
+        component:()=>import("@/views/welcome/Info")
+      },
       // 主机管理
       {
         path: "host",

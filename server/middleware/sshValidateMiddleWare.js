@@ -1,10 +1,10 @@
 module.exports = (app) => {
-    return async (req,res,next) => {
+    return async (ws,req,next) => {
+        console.log('req',req._parsedUrl.query.slice(6))
         const assert = require('http-assert')
-        // console.log("token:",req.headers.authorization)
-        assert(req.headers.authorization, 401, '请先登录')
-
-        const token = req.headers.authorization.split(" ").pop()
+        
+        const token = req._parsedUrl.query.slice(6)
+        console.log('ws token:',token)
         assert(token, 401, '请提供jwt token')
 
         const {id} = require('jsonwebtoken').verify(token, app.get('secret'))

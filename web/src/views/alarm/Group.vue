@@ -1,103 +1,101 @@
 <template>
-  <a-layout-content style="padding:24px;minHeight:280px ">
-    <a-card>
-      <a-form
-          layout="horizontal"
-          :label-col="{ flex:'60px'  }"
-          :wrapper-col="{ flex:'auto' }"
-      >
-        <a-row :gutter="12">
-          <a-col :sm="24" :md="6">
-            <a-form-item label="组名称：" style="display: flex">
-              <a-input placeholder="请输入"> </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :sm="24" :md="6">
-            <a-form-item>
-              <a-button type="primary" @click="clickRefresh">
-                <a-icon type="sync"></a-icon>
-                刷新
-              </a-button>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <div style="margin: 0 0 16px">
-        <a-button type="primary" @click="showModal">
-          <a-icon type="plus"></a-icon>
-          新建
-        </a-button>
-        <a-modal title="新建联系组" :visible="visible" :confirm-loading="confirmLoading" ok-text="确定" cancel-text="取消"
-                 @ok="handleOk"
-                 @cancel="handleCancel" width="800px">
-          <a-form
-              layout="horizontal"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 14 }"
-              :form="newGroupForm"
+  <a-card>
+    <a-form
+        layout="horizontal"
+        :label-col="{ flex:'60px'  }"
+        :wrapper-col="{ flex:'auto' }"
+    >
+      <a-row :gutter="12">
+        <a-col :sm="24" :md="6">
+          <a-form-item label="组名称：" style="display: flex">
+            <a-input placeholder="请输入"> </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :sm="24" :md="6">
+          <a-form-item>
+            <a-button type="primary" @click="clickRefresh">
+              <a-icon type="sync"></a-icon>
+              刷新
+            </a-button>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-form>
+    <div style="margin: 0 0 16px">
+      <a-button type="primary" @click="showModal">
+        <a-icon type="plus"></a-icon>
+        新建
+      </a-button>
+      <a-modal title="新建联系组" :visible="visible" :confirm-loading="confirmLoading" ok-text="确定" cancel-text="取消"
+                @ok="handleOk"
+                @cancel="handleCancel" width="800px">
+        <a-form
+            layout="horizontal"
+            :label-col="{ span: 4 }"
+            :wrapper-col="{ span: 14 }"
+            :form="newGroupForm"
+        >
+          <a-form-item label="组名称">
+            <a-input v-decorator="['groupName',{rules:[{required:true}]}]"  placeholder="请输入联系组名称">
+
+            </a-input>
+          </a-form-item>
+          <a-form-item label="备注信息">
+            <a-textarea v-decorator="['remarks']" :rows="2" placeholder="请输入模板备注信息">
+
+            </a-textarea>
+          </a-form-item>
+          <a-form-item label="选择联系人">
+            <a-transfer
+                :data-source="sourceData"
+                :titles="['已有联系人', '已选联系人']"
+                :target-keys="targetKeys"
+                :selected-keys="selectedKeys"
+                :render="item => item.title"
+                @change="handleChange"
+                @selectChange="handleSelectChange"
+                @scroll="handleScroll"
+            />
+          </a-form-item>
+        </a-form>
+      </a-modal>
+    </div>
+    <a-spin :spinning="spinning">
+      <a-table :columns="columns" :data-source="data">
+        <a slot="name" slot-scope="text">{{ text }}</a>
+        <span slot="customTitle"> 序号</span>
+        <span slot="updateTime" slot-scope="updateTime">{{ Math.floor((Date.now()-updateTime)/60000) +"分钟前" }}</span>
+        <span slot="tags" slot-scope="tags">
+          <a-tag
+              v-for="tag in tags"
+              :key="tag"
+              :color="
+              tag == '成功' ? 'green' : tag=='失败' ? 'red':'blue'
+              /*tag === 'loser'
+              ? 'volcano'
+              : tag.length > 5
+              ? 'geekblue'
+              : 'green'*/
+            "
           >
-            <a-form-item label="组名称">
-              <a-input v-decorator="['groupName',{rules:[{required:true}]}]"  placeholder="请输入联系组名称">
-
-              </a-input>
-            </a-form-item>
-            <a-form-item label="备注信息">
-              <a-textarea v-decorator="['remarks']" :rows="2" placeholder="请输入模板备注信息">
-
-              </a-textarea>
-            </a-form-item>
-            <a-form-item label="选择联系人">
-              <a-transfer
-                  :data-source="sourceData"
-                  :titles="['已有联系人', '已选联系人']"
-                  :target-keys="targetKeys"
-                  :selected-keys="selectedKeys"
-                  :render="item => item.title"
-                  @change="handleChange"
-                  @selectChange="handleSelectChange"
-                  @scroll="handleScroll"
-              />
-            </a-form-item>
-          </a-form>
-        </a-modal>
-      </div>
-      <a-spin :spinning="spinning">
-        <a-table :columns="columns" :data-source="data">
-          <a slot="name" slot-scope="text">{{ text }}</a>
-          <span slot="customTitle"> 序号</span>
-          <span slot="updateTime" slot-scope="updateTime">{{ Math.floor((Date.now()-updateTime)/60000) +"分钟前" }}</span>
-          <span slot="tags" slot-scope="tags">
-            <a-tag
-                v-for="tag in tags"
-                :key="tag"
-                :color="
-                tag == '成功' ? 'green' : tag=='失败' ? 'red':'blue'
-                /*tag === 'loser'
-                ? 'volcano'
-                : tag.length > 5
-                ? 'geekblue'
-                : 'green'*/
-              "
-            >
-              {{ tag.toUpperCase() }}
-            </a-tag>
-          </span>
-          <span slot="action">
-            <a>编辑</a>
-            <a-divider type="vertical" />
-            <a>删除</a>
-            <a-divider type="vertical" />
-            <!--<a class="ant-dropdown-link"> 更多 <a-icon type="down" /> </a>-->
-            <!--            <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-                            更多 <a-icon type="down" />
-                          </a>
-                        </a-dropdown>-->
-          </span>
-        </a-table>
-      </a-spin>
-    </a-card>
-  </a-layout-content>
+            {{ tag.toUpperCase() }}
+          </a-tag>
+        </span>
+        <span slot="action">
+          <a>编辑</a>
+          <a-divider type="vertical" />
+          <a>删除</a>
+          <a-divider type="vertical" />
+          <!--<a class="ant-dropdown-link"> 更多 <a-icon type="down" /> </a>-->
+          <!--            <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                          更多 <a-icon type="down" />
+                        </a>
+                      </a-dropdown>-->
+        </span>
+      </a-table>
+    </a-spin>
+  </a-card>
 </template>
 
 <script>
