@@ -55,7 +55,6 @@ export default {
           key: 'action',
         }
       ],
-
     }
   },
   methods: {
