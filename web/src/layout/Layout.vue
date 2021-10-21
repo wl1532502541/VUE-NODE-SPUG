@@ -1,8 +1,8 @@
 <template>
   <a-layout id="components-layout-demo-side" style="min-height: 100vh">
-    <Sider :collapsed="collapsed"/>
+    <Sider :collapsed="collapsed" />
     <a-layout>
-      <Header :collapsed="collapsed" @toggle="toggleCollapsed"/>
+      <Header :collapsed="collapsed" @toggle="toggleCollapsed" />
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
@@ -19,32 +19,32 @@ import Sider from './components/Sider.vue';
 import Header from './components/Header.vue'
 export default {
   name: "Layout",
-  components:{
+  components: {
     Sider,
     Header
   },
-  data() {
+  data () {
     return {
       collapsed: false,
       menuSelected: 1,
-      openKeys:[],
-      
+      openKeys: [],
+
     };
   },
-  methods:{
-    toggleCollapsed(){
+  methods: {
+    toggleCollapsed () {
       this.collapsed = !this.collapsed
     }
   },
-  created(){
+  created () {
     // console.log("/"+this.$route.path.split("/")[1])
   }
 };
 </script>
 
 <style scoped lang="scss">
-  .content{
-    padding: 24px;
-    min-height: 280px;
-  }
+.content {
+  padding: 24px;
+  min-height: 280px;
+}
 </style>

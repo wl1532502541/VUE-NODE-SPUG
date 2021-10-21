@@ -10,7 +10,8 @@ module.exports = (app) => {
         const {id} = require('jsonwebtoken').verify(token, app.get('secret'))
         assert(id, 401, '无效的jwt token')
 
-        req.user = await require('../models/Account').findById(id)
+        // req.user = await require('../models/Account').findById(id)
+        req.user = await require('../routes/api/account/models').User.findById(id)
         assert(req.user, 401, '用户不存在')
 
         next()

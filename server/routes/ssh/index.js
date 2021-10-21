@@ -26,7 +26,6 @@ module.exports = (app) => {
                 // 转发ssh服务机的消息给前端
                 stream.on('data', (data) => {
                     socket.send(utf8.decode(data.toString('binary')));
-
                 // 关闭连接
                 }).on('close', () => {
                     console.log('ssh end')
@@ -58,6 +57,7 @@ module.exports = (app) => {
         const host = await Host.findById(_id)
         // console.log(fs.readFileSync('c:/users/wl/.ssh/id_rsa',{encoding:'utf8'}))
         // console.log(fs.readFileSync('pKey.txt'),utf8)
+        //暂时没开密码链接
         console.log(host)
         createNewServer(host,ws)
     })

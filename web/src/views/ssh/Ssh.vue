@@ -61,7 +61,7 @@ export default {
     // this._fetch();
     const fitPlugin = new FitAddon();
     this.term.loadAddon(fitPlugin);
-    this.term.write('connecting...')
+    // this.term.write('connecting...')
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     this.socket = new WebSocket(
       // `${protocol}//${window.location.host}/ws/ssh/${this.id}`
@@ -70,7 +70,7 @@ export default {
     );
     // console.log('token',this.$store.getters['user/token'])
     let interval = setInterval(() => {
-      this.term.write('.')
+      // this.term.write('.')
     }, 1000)
     this.socket.onmessage = (e) => {
       if (interval) {
@@ -113,15 +113,19 @@ export default {
   flex-direction: column;
   min-height: 100vh;
 }
+.actions {
+  display: flex;
+  align-items: center;
+}
 .terminal {
   flex: 1;
   display: flex;
   background-color: #000;
   padding-left: 5px;
 }
-/* .terminal > div {
+.terminal > div {
   flex: 1;
-} */
+}
 
 .header {
   height: 46px;

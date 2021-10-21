@@ -14,4 +14,5 @@ const schema = new mongoose.Schema({
     // deleted_by_id:{type:Number}
 })
 
-module.exports = mongoose.model('Host',schema)
+// module.exports = mongoose.model('Host',schema)
+exports.Host = mongoose.model('Host',schema)

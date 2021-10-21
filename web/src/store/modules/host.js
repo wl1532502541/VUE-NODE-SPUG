@@ -28,14 +28,14 @@ export default {
       state.records = data
     },
     resetState(state){
-      stata.records= [],
-      stata.types= [],
-      stata.record= {},
-      stata.isFetching= false,
-      stata.formVisible= false,
-      stata.f_type= "",
-      stata.f_hostName= "",
-      stata.f_ip= ""
+      state.records= [],
+      state.types= [],
+      state.record= {},
+      state.isFetching= false,
+      state.formVisible= false,
+      state.f_type= "",
+      state.f_hostName= "",
+      state.f_ip= ""
     }
     
   },

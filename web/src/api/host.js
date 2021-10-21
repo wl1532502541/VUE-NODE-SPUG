@@ -1,10 +1,10 @@
 import $axios from './axios'
 
-const preUrl='/api/rest/host'
+const preUrl='/api/host'
 // export function fetchRecords(){
 export function getHosts(){
     // const url = `${preUrl}/filter?filter=&page=0_10&sort=-createTime`
-    const url = `${preUrl}s`
+    const url = `${preUrl}`
     return $axios.get(url)
 }
 
