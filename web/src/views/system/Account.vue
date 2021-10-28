@@ -1,55 +1,30 @@
 <template>
   <a-card>
-    <a-form
-        layout="horizontal"
-        :label-col="{ span:4}"
-        :wrapper-col="{ span: 18 , offset: 1}"
-    >
-      <a-row :gutter="48">
-        <a-col :sm="24" :md="6">
-          <a-form-item label="账户名称：">
-            <a-input placeholder="请输入">
-
-            </a-input>
-          </a-form-item>
-        </a-col>
-        <a-col :sm="24" :md="6">
-          <a-form-item label="账户状态：">
-            <a-select placeholder="请选择">
-              <a-select-option value="1">
-                1
-              </a-select-option>
-              <a-select-option value="2">
-                Web服务
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :sm="24" :md="6">
-          <a-form-item>
-            <a-button type="primary" @click="clickRefresh">
-              <a-icon type="sync"></a-icon>
-              刷新
-            </a-button>
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+    <SearchForm>
+      <SearchFormItem :md="8" label="账户名称：">
+        <a-input placeholder="请输入" @change="" allowClear />
+      </SearchFormItem>
+      <SearchFormItem :md="8" label="账户状态：">
+        <a-select placeholder="请选择" @change="" allowClear>
+          <a-select-option :value="true">
+            正常
+          </a-select-option>
+          <a-select-option :value="false">
+            禁用
+          </a-select-option>
+        </a-select>
+      </SearchFormItem>
+      <SearchFormItem :md="6">
+        <a-button type="primary" @click="clickRefresh">
+          <a-icon type="sync"></a-icon>刷新
+        </a-button>
+      </SearchFormItem>
+    </SearchForm>
     <div style="margin: 0 0 16px">
-      <a-button type="primary" @click="setVisible(newAccount,true)">
-        <a-icon type="plus"></a-icon>
+      <a-button type="primary" @click="setVisible(newAccount,true)" icon="plus">
         新建
       </a-button>
-      <a-modal
-          title="新建账户"
-          :visible="newAccount.visible"
-          :confirm-loading="newAccount.confirmLoading"
-          ok-text="确定"
-          cancel-text="取消"
-          @ok="handleOk(newAccount)"
-          @cancel="setVisible(newAccount,false)"
-          width="800px"
-      >
+      <a-modal title="新建账户" :visible="newAccount.visible" :confirm-loading="newAccount.confirmLoading" ok-text="确定" cancel-text="取消" @ok="handleOk(newAccount)" @cancel="setVisible(newAccount,false)" width="800px">
         s
       </a-modal>
     </div>
@@ -73,81 +48,83 @@
 </template>
 
 <script>
-import {throttle} from "@/libs";
+// import { throttle } from "@/libs";
+import SearchForm from "../../components/searchForm/SearchForm.vue";
+import SearchFormItem from "../../components/searchForm/SearchFormItem.vue";
 
 export default {
   name: "Account",
-  components: {},
-  data() {
+  components: { SearchForm, SearchFormItem },
+  data () {
     return {
       data,
       columns,
-      newAccount:{
-        visible:false,
-        confirmLoading:false
+      newAccount: {
+        visible: false,
+        confirmLoading: false
       },
       //按钮 刷新
       spinning: false,
       //表单 密码
-      formResetPwd:this.$form.createForm(this,'formResetPwd')
+      formResetPwd: this.$form.createForm(this, 'formResetPwd')
     };
   },
   methods: {
-    setVisible(obj,boolean){
-      obj.visible=boolean;
+    setVisible (obj, boolean) {
+      obj.visible = boolean;
     },
-    handleOk(obj){
-      obj.confirmLoading=true;
-      setTimeout(()=>{
-        obj.visible=false;
-        obj.confirmLoading=false;
-      },100);
+    handleOk (obj) {
+      obj.confirmLoading = true;
+      setTimeout(() => {
+        obj.visible = false;
+        obj.confirmLoading = false;
+      }, 100);
     },
     //刷新按钮
-    clickRefresh:function(){
+    clickRefresh: function () {
       console.log("2");
       this.spinning = !this.spinning;
       let that = this;
-      let fn=setTimeout(function() {
+      let fn = setTimeout(function () {
         that.spinning = !that.spinning;
       }, 500);
       console.log('pre')
-      throttle(fn,5000)()
+      throttle(fn, 5000)()
       console.log('after')
     },
     //禁用对话框
-    showDisable:function(){
+    showDisable: function () {
       this.$confirm({
         title: '操作确认',
         content: h => <div style="color:red;">确定要禁用 ？</div>,
-        onOk() {
+        onOk () {
           console.log('确定');
         },
-        onCancel() {
+        onCancel () {
           console.log('取消');
         },
         class: 'test',
       });
     },
     //删除对话框
-    showDelete:function(){
+    showDelete: function () {
       this.$confirm({
         title: '删除确认',
         content: h => <div style="color:red;">确定要删除 ？</div>,
-        onOk() {
+        onOk () {
           console.log('确定');
         },
-        onCancel() {
+        onCancel () {
           console.log('取消');
         },
         class: 'test',
       });
     },
     //重置密码对话框
-    showResetPwd:function(){
+    showResetPwd: function () {
       this.$warning({
         title: '重置登录密码',
-        content: h =><div></div> /*<a-form layout="horizontal" :form=this.formResetPwd>
+        content: h => <div></div> /*<a-form layout="horizontal" :form=this.formResetPwd>
           <a-form-item label="重置后的新密码：">
             <a-input v-decorator="[
                       'templateType',
@@ -165,7 +142,7 @@ export default {
           </a-form-item>
         </a-form>*/
         ,
-        onOk(){},
+        onOk () { },
       });
     }
   }
@@ -187,13 +164,13 @@ const data = [/*
     updateTime: "3分钟前",
     describe: ""
   }*/{
-  key: "1",
-  hostType:'Web服务',
-  hostName:'web-01123',
-  hostLocation: '10.7.117.181',
-  hostPort: '2201',
-  hostRemarks: ''
-}
+    key: "1",
+    hostType: 'Web服务',
+    hostName: 'web-01123',
+    hostLocation: '10.7.117.181',
+    hostPort: '2201',
+    hostRemarks: ''
+  }
 ];
 const columns = [
   {
@@ -206,7 +183,7 @@ const columns = [
     title: "主机名称",
     dataIndex: "hostName",
     key: "hostName",
-    sorter: (a, b) => a.hostName-b.hostName,
+    sorter: (a, b) => a.hostName - b.hostName,
   },
   {
     title: "连接地址",

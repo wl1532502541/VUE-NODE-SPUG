@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { getHistories } from '../../../api/login'
+import { getHistories } from '../../../api/account'
 export default {
   name: "LoginActive",
   data () {
@@ -27,6 +27,7 @@ export default {
   created () {
     getHistories().then((res) => {
       this.histories = res
+      // console.log(this.histories)
     }).finally(this.loading = false)
   }
 };

@@ -1,4 +1,4 @@
-import {login} from '@/api/login'
+import {login} from '@/api/account'
 
 const state = {
     token:localStorage.getItem('token')?localStorage.getItem('token'):'',

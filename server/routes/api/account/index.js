@@ -40,8 +40,7 @@ module.exports = app => {
 
   // login->history
   router.get('/login/history', async(req,res) => {
-    const histories = await History.find().populate({path:'user',select:'nickname'})
-    console.log(histories)
+    const histories = await History.find().populate({path:'user',select:'nickname'}).sort({_id:-1})
     res.send(histories)
   })
 
@@ -52,8 +51,18 @@ module.exports = app => {
     res.send(users)
   })
 
+  router.get('/user/:_id',async(req,res) => {
+    try{
+      const user = await User.find({_id:req.params._id})
+      res.send(user)
+    }catch(error){
+      res.status(400).send(error)
+    }
+  })
+
   router.patch('/user',async(req,res) => {
     try{
+      // console.log('patch-user',req.body)
       arr = ["_id","username","nickname","is_super","is_active","role"]
       const form = {}
       Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
@@ -75,6 +84,39 @@ module.exports = app => {
     }
   })
 
+  router.patch('/self',async(req,res)=>{
+    try{
+      // console.log('patch-self body',req.body)
+      arr = ["nickname","old_password","new_password"]
+      const form = {}
+      Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
+        form[key]=req.body[key]
+      })
+      // console.log(req.user)
+      if("old_password" in form && "new_password" in form){
+        if(form.new_password.length<6){
+          return res.status(400).send("请设置至少6位的新密码")
+        }
+        const user = await User.findOne({username:req.user.username}).select('+password_hash')
+        const isValid = require('bcryptjs').compareSync(form.old_password,user.password_hash)
+        if(!isValid){
+          return res.status(400).send("原密码错误，请重新输入")
+        }else{
+          const user = await User.findOneAndUpdate({_id:req.user._id},{password_hash:form.new_password},{new:true})
+          return res.send(user)
+        }
+      }
+      if("nickname" in form){
+        const user = await User.findOneAndUpdate({_id:req.user._id},{nickname:form.nickname},{new:true})
+        console.log("req.body",req.body)
+        req.user=user
+        return res.send(user)
+      }
+      res.status(400).send("输入参数有误")
+    }catch(error){
+      res.status(400).send(error)
+    }
+  })
 
   // role
 }

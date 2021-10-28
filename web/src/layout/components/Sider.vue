@@ -39,8 +39,7 @@
       </a-sub-menu>
       <!--  监控中心  -->
       <a-menu-item v-for="router in routers.slice(6,7)" :key="router.path" @click="$router.push(router.path)">
-        <a-icon :type="router.iconType" />
-        {{router.name}}
+        <a-icon :type="router.iconType" />{{router.name}}
       </a-menu-item>
 
       <!-- 报警中心 系统管理-->
@@ -63,7 +62,7 @@ export default {
   props: {
     collapsed: Boolean,
   },
-  data() {
+  data () {
     return {
       routers: [
         { id: 1, name: "工作台", path: "/home", iconType: "desktop" },
@@ -92,7 +91,7 @@ export default {
           id: 5,
           name: "任务计划",
           path: "/schedule",
-          iconType: "flag",
+          iconType: "schedule",
         },
         {
           id: 6,

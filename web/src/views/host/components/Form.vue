@@ -72,7 +72,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import { insertOrUpdateHost } from "@/api/host";
 // import http from "../../../libs/http";
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       form: this.$form.createForm(this, { name: "form" }),
@@ -86,7 +86,7 @@ export default {
   methods: {
     ...mapMutations("host", ["closeForm"]),
     ...mapActions("host", ["_getHosts"]),
-    handleSubmit() {
+    handleSubmit () {
       let message = this.$message;
       this.loading = true;
       this.form.validateFields((err, values) => {
@@ -95,7 +95,7 @@ export default {
           const formData = values;
           const file = this.fileList[0];
           if (file && file.data) formData["pkey"] = file.data;
-          insertOrUpdateHost(this.record._id,formData).then(
+          insertOrUpdateHost(this.record._id, formData).then(
             (res) => {
               console.log("insertOrUpdateHost res", res);
               if (res === "auth fail") {
@@ -124,16 +124,16 @@ export default {
       });
       this.loading = false;
     },
-    handleCloseForm(){
+    handleCloseForm () {
       this.closeForm();
       this.form.resetFields()
     },
-    handleUploadChange(v) {
+    handleUploadChange (v) {
       if (v.fileList.length === 0) {
         this.fileList = [];
       }
     },
-    handleAddZone() {
+    handleAddZone () {
       let record = this.$store.state.host.record,
         types = this.$store.state.host.types,
         editType = record.type,
@@ -158,7 +158,7 @@ export default {
         },
       });
     },
-    handleEditZone() {
+    handleEditZone () {
       let record = this.$store.state.host.record,
         editType = record.type,
         message = this.$message;
@@ -170,7 +170,7 @@ export default {
             <a-form-item
               required
               label="主机类别"
-              // help="该操作将批量更新所有属于该类别的主机并立即生效，如过只是想修改单个主机的类别请使用添加类别或下拉框选择切换类别。"
+            // help="该操作将批量更新所有属于该类别的主机并立即生效，如过只是想修改单个主机的类别请使用添加类别或下拉框选择切换类别。"
             >
               <a-input
                 defaultValue={record.type}

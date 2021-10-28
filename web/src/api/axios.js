@@ -50,11 +50,15 @@ $axios.interceptors.response.use(
                 case 404:
                     message.error('网络请求不存在')
                     break;
-                case 422:
-                    message.error(error.response.data.message)
-                    break;
+                // case 422:
+                //     message.error(error.response.data.message)
+                //     break;
                 default:
-                    message.error(error.response.data.status)
+                    if(error.response.data.message){
+                        message.error(error.response.data.message)
+                    }else{
+                        message.error(error.response.data)
+                    }
             }
         }else{
             // 请求超时或网络有问题

@@ -27,13 +27,14 @@ const viewsRoutes=[
       },
       {
         path:"welcome/info",
-        component:()=>import("@/views/welcome/Info")
+        // component:()=>import("@/views/welcome/Info")
+        component:()=>import("@/views/welcome/info/index.vue")
       },
       // 主机管理
       {
         path: "host",
         name: "Host",
-        component: () => import("@/views/host/Host")
+        component: () => import("@/views/host")
       },
       // 批量执行
       {
@@ -105,7 +106,7 @@ const viewsRoutes=[
       {
         path: "system/account",
         name: "Account",
-        component: () => import("@/views/system/Account")
+        component: () => import("@/views/system/account/index.vue")
       },
       {
         path: "system/role",

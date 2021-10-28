@@ -19,26 +19,23 @@
       </SearchFormItem>
     </SearchForm>
     <div style="margin: 0 0 16px">
-      <a-button type="primary" @click="showForm()">
-        <a-icon type="plus"></a-icon>
+      <a-button type="primary" @click="showForm()" icon="plus">
         新建
       </a-button>
       <Form />
     </div>
-    <a-spin :spinning="isFetching">
-      <a-table :columns="columns" :data-source="data" rowKey="_id" tableLayout="fixed">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"> 类别</span>
-        <span slot="action" slot-scope="record">
-          <a @click="showForm(record)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="handleDelete(record)">删除</a>
-          <a-divider type="vertical" />
-          <a @click="handleConsole(record)">Console</a>
-          <a-divider type="vertical" />
-        </span>
-      </a-table>
-    </a-spin>
+    <a-table :loading="isFetching" :columns="columns" :data-source="data" rowKey="_id" tableLayout="fixed">
+      <!-- <a slot="name" slot-scope="text">{{ text }}</a> -->
+      <span slot="customTitle"> 类别</span>
+      <span slot="action" slot-scope="record">
+        <a @click="showForm(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="handleDelete(record)">删除</a>
+        <a-divider type="vertical" />
+        <a @click="handleConsole(record)">Console</a>
+        <a-divider type="vertical" />
+      </span>
+    </a-table>
   </a-card>
 </template>
 
@@ -123,16 +120,6 @@ export default {
     }
   },
 };
-/*let data = [
-  {
-    key: "1",
-    hostType: "Web服务",
-    hostName: "web-01123",
-    hostLocation: "10.7.117.181",
-    hostPort: "2201",
-    hostRemarks: ""
-  }
-];*/
 const columns = [
   {
     dataIndex: "type",
@@ -173,7 +160,7 @@ const columns = [
 </script>
 
 <style scoped>
-.ant-advanced-search-form {
+/* .ant-advanced-search-form {
   padding: 24px;
   background: #fbfbfb;
   border: 1px solid #d9d9d9;
@@ -184,5 +171,5 @@ const columns = [
 }
 .ant-advanced-search-form .ant-form-item-control-wrapper {
   flex: 1;
-}
+} */
 </style>

@@ -29,5 +29,7 @@ exports.Role = mongoose.model('Role',Role)
 const History = new mongoose.Schema({
   user:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
   ip:{type:String}
-},{ timestamps: {createdAt:'created_at'}})
+},{ timestamps: {createdAt:'created_at'}// 返回的是 带T Z的0时区时间
+})
+
 exports.History = mongoose.model('History',History)
