@@ -3,7 +3,7 @@
     <a-card :loading="loading" title="最近30天登陆">
       <a-list :data-source="histories" style="height:329px;overflow:scroll">
         <a-list-item slot="renderItem" slot-scope="item,index">
-          <span>{{item.created_at.replace("T"," ").replace("Z","").slice(0,-4)}}</span>
+          <span>{{new Date(+new Date(item.created_at)+8*60*60*1000).toISOString().replace("T"," ").replace("Z","").slice(0,-4)}}</span>
           <span class="spanText">{{item.user.nickname}}</span>
           <span>通过</span>
           <span class="spanText">{{item.ip}}</span>

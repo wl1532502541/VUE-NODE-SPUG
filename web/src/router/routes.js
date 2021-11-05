@@ -111,7 +111,7 @@ const viewsRoutes=[
       {
         path: "system/role",
         name: "Role",
-        component: () => import("@/views/system/Role")
+        component: () => import("@/views/system/role/index.vue")
       },
       {
         path: "system/setting",

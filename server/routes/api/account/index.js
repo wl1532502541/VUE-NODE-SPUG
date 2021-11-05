@@ -2,10 +2,12 @@ module.exports = app => {
   const router = require("express").Router()
   const jwt = require('jsonwebtoken')
   const assert = require('http-assert')
-  let User = require('./models').User
-  const History = require('./models').History
+  // let User = require('./models').User
+  // const History = require('./models').History
+  const { User,History,Role } = require("./models")
   // 登陆验证中间件
-  const auth = require("../../../middleware/validateMiddleWare")
+  // const auth = require("../../../middleware/validateMiddleWare")
+  const {auth,perm} = require("../../../middleware/validateMiddleWare")
   
 
   // 不用登陆验证
@@ -24,7 +26,7 @@ module.exports = app => {
       // 3.返回token
       const token = jwt.sign({ id: user._id},app.get('secret'))
       console.log(req.ip)
-      History.create({user:user.id,ip:req.ip})
+      History.create({user:user._id,ip:req.ip})
 
       res.send({
           message: '登陆成功',
@@ -41,13 +43,15 @@ module.exports = app => {
   // login->history
   router.get('/login/history', async(req,res) => {
     const histories = await History.find().populate({path:'user',select:'nickname'}).sort({_id:-1})
+    console.log("histories",histories)
     res.send(histories)
   })
 
   // user
   router.get('/user', async(req, res) => {
-    // const users = User.find({is_super:false}).populate('role')
-    const users = await User.find({is_super:false})
+    const users = await User.find({is_super:false}).populate('role',"name")
+    // const users = await User.find({is_super:false})
+    console.log("users",users)
     res.send(users)
   })
 
@@ -60,27 +64,66 @@ module.exports = app => {
     }
   })
 
-  router.patch('/user',async(req,res) => {
+  router.post('/user',perm("admin"),async(req,res) => {
     try{
-      // console.log('patch-user',req.body)
-      arr = ["_id","username","nickname","is_super","is_active","role"]
+      arr = ["username","password","nickname","role"]
       const form = {}
       Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
-        form[key]=req.body[key]
+        if(key=="password"){
+          form.password_hash=req.body.password
+        }else{
+          form[key]=req.body[key]
+        }
       })
-      if(!("_id" in form)){
-        return res.status(400).send("请指定对象")
-      }
+      assert(form.username,400,"请输入登录名")
+      assert(form.password_hash,400,"请输入密码")
+      assert(form.nickname,400,"请输入昵称")
+      assert(form.role,400,"请选择角色")
       if("username" in form){
         let user = await User.find({username:form.username})
         if(user.length)return res.status(400).send(`已存在登录名为【${form.username}】的用户`)
       }
-      const _id = form._id
-      delete form._id
-      const user = await User.findOneAndUpdate({_id:_id},form,{new:true})
+      const user = await User.create(form)
       res.send(user)
     }catch(error){
       res.status(400).send(error)
+    }
+  })
+
+  router.patch('/user/:_id',perm("admin"),async(req,res) => {
+    try{
+      const _id = req.params._id
+      arr = ["username","nickname","password","is_active","role"]
+      const form = {}
+      Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
+        if(key == "password"){
+          form[password_hash]=req.body[key]
+        }else{
+          form[key]=req.body[key]
+        }
+      })
+      if(!_id){
+        return res.status(400).send("请指定对象")
+      }
+      if("username" in form){
+        let user = await User.find({username:form.username})
+        if(user.length&&user[0]._id!=_id)return res.status(400).send(`已存在登录名为【${form.username}】的用户`)
+      }
+      const user = await User.findOneAndUpdate({_id:_id},form,{new:true})
+      res.send(user)
+    }catch(error){
+      res.status(400).send("catch-error",error)
+    }
+  })
+
+  router.delete('/user/:_id',perm("admin"),async(req,res) => {
+    try{
+      const _id = req.params._id
+      const user = await User.findByIdAndDelete(_id)
+      console.log("删除user _id:",_id)
+      res.send(user)
+    }catch(error){
+      res.status(400).send("catch-error",error)
     }
   })
 
@@ -119,4 +162,38 @@ module.exports = app => {
   })
 
   // role
+  router.get('/role', async(req, res) => {
+    // const users = User.find({is_super:false}).populate('role')
+    const roles = await Role.find()
+    console.log("roles",roles)
+    // res.send(roles)
+  })
+
+  router.post('/role',async(req,res) => {
+    try{
+      const role = await Role.create(req.body)
+      console.log(role)
+      res.send(role)
+      // arr = ["username","password","nickname","role_id"]
+      // const form = {}
+      // Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
+      //   form[key]=req.body[key]
+      // })
+      // if(!("username" in req.body) || req.body)
+      // res.send(req.body)
+    }catch(error){
+      res.status(400).send(error)
+    }
+  })
+
+  router.delete('/role/:_id',perm("admin"),async(req,res) => {
+    try{
+      const _id = req.params._id
+      const role = await Role.findByIdAndDelete(_id)
+      console.log("删除role _id:",_id)
+      res.send(role)
+    }catch(error){
+      res.status(400).send("catch-error",error)
+    }
+  })
 }

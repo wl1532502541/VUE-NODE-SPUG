@@ -33,7 +33,6 @@
 <script>
 import SearchForm from "../../../components/searchForm/SearchForm.vue";
 import SearchFormItem from "../../../components/searchForm/SearchFormItem.vue";
-// import { getUsers } from "../../../api/account"
 import comTable from "./Table.vue"
 import comForm from "./Form.vue"
 import store from './store'
@@ -64,16 +63,4 @@ export default {
 </script>
 
 <style>
-/* .ant-advanced-search-form {
-  padding: 24px;
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-}
-.ant-advanced-search-form .ant-form-item {
-  display: flex;
-}
-.ant-advanced-search-form .ant-form-item-control-wrapper {
-  flex: 1;
-} */
 </style>

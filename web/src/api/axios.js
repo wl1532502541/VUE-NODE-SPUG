@@ -6,7 +6,7 @@ import { message } from 'ant-design-vue'
 
 const $axios = axios.create({
     // 超时时间
-    timeout:30000,
+    timeout:5000,
     baseURL:process.env.VUE_APP_BASE_API
 })
 Vue.prototype.$http = axios // 并发请求
@@ -39,17 +39,17 @@ $axios.interceptors.response.use(
         console.dir(error)
         if(error.response){
             switch(error.response.status){
-                case 401:
-                    // 会话过期，要重新登陆
-                    message.error('会话过期，重新登陆')
-                    store.commit('user/delToken')
-                    router.push({
-                        path:'/login'
-                    })
-                    break;
-                case 404:
-                    message.error('网络请求不存在')
-                    break;
+                // case 401:
+                //     // 会话过期，要重新登陆
+                //     message.error('会话过期，重新登陆')
+                //     store.commit('user/delToken')
+                //     router.push({
+                //         path:'/login'
+                //     })
+                //     break;
+                // case 404:
+                //     message.error('网络请求不存在')
+                //     break;
                 // case 422:
                 //     message.error(error.response.data.message)
                 //     break;

@@ -53,7 +53,8 @@ module.exports = (app) => {
     app.ws('/ssh/:id',auth(app),async function(ws, req){
         const _id = req.params.id
         // console.log('111',req._parsedUrl)
-        const Host = require('../../models/Host')
+        // const Host = require('../../models/Host')
+        const Host = require('../api/host/models').Host
         const host = await Host.findById(_id)
         // console.log(fs.readFileSync('c:/users/wl/.ssh/id_rsa',{encoding:'utf8'}))
         // console.log(fs.readFileSync('pKey.txt'),utf8)

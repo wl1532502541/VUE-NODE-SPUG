@@ -3,6 +3,9 @@
     <span slot="is_active" slot-scope="text">
       <a-badge :status="text.toString()=='true'?'success':'default'" :text="text.toString()=='true'?'正常':'禁用'" />
     </span>
+    <span slot="role" slot-scope="record">
+      {{record.name}}
+    </span>
     <span slot="action" slot-scope="record">
       <a @click="handleActive(record)">{{record.is_active?'禁用':'启用'}}</a>
       <a-divider type="vertical" />
@@ -18,20 +21,20 @@
 
 <script>
 import store from './store'
-import { patchUser } from '../../../api/account'
+import { deleteUser, patchUser } from '../../../api/account'
+import SettingVue from '../setting/Setting.vue'
 export default {
   name: 'Table',
   data () {
     return {
       columns,
       store: store,
+      password: ""
     }
   },
   // inject: ['vm'],
   created () {
-    // console.log("table_store", this.store)
     store.fetchRecords()
-    // console.log(this)
   },
   computed: {
     data_filtered () {
@@ -43,58 +46,54 @@ export default {
   },
   methods: {
     handleActive (record) {
-      let message = this.$message
-      const _this = this
       this.$confirm({
         title: '操作确认',
+        okText: "确定",
+        cancelText: "取消",
         // content: h => <div>确定要禁用 ？</div>,
         content: `确定要${record.is_active ? '禁用' : '启用'}【${record.nickname}】?`,
-        onOk () {
-          patchUser({ _id: record._id, is_active: !record.is_active }).then((res) => {
-            _this.store.fetchRecords().then((res) => {
-              message.success('修改成功')
+        onOk: () => {
+          patchUser(record._id, { is_active: !record.is_active }).then((res) => {
+            this.store.fetchRecords().then((res) => {
+              this.$message.success('修改成功')
             })
           })
         },
-        // class: 'test',
       });
     },
     //重置密码对话框
-    handleResetPwd: function () {
-      this.$warning({
+    handleResetPwd: function (record) {
+      this.$confirm({
+        icon: 'exclamation-circle',
         title: '重置登录密码',
-        content: h => <div><a-input /></div> /*<a-form layout="horizontal" :form=this.formResetPwd>
-          <a-form-item label="重置后的新密码：">
-            <a-input v-decorator="[
-                      'templateType',
-                      {
-                        rules: [
-                          {
-                            required: true,
-                            message: 'Please select your gender!'
-                          }
-                        ]
-                      }
-                    ]">
-
-            </a-input>
+        okText: "确定",
+        cancelText: "取消",
+        content: h => <a-form>
+          <a-form-item required label="重置后的新密码">
+            <a-input-password onChange={e => { this.password = e.target.value }} />
           </a-form-item>
-        </a-form>*/
+        </a-form>
         ,
-        onOk () { },
+        onOk: () => {
+          return patchUser(record._id, { password: this.password }).then(() => {
+            this.$message.success('重置成功', 0.5)
+          })
+        }
       });
     },
     handleDelete (record) {
       this.$confirm({
         title: '删除确认',
-        content: h => <div style="color:red;">确定要删除 ？</div>,
-        onOk () {
-          console.log('确定');
+        okText: "确定",
+        cancelText: "取消",
+        content: `确定要删除【${record.nickname}】?`,
+        onOk: () => {
+          deleteUser(record._id).then(res => {
+            this.$message.success("删除成功")
+            store.formVisible = false
+            store.fetchRecords()
+          })
         },
-        onCancel () {
-          console.log('取消');
-        },
-        class: 'test',
       });
     }
   }
@@ -120,7 +119,10 @@ const columns = [
   {
     title: "角色",
     key: "role",
-    dataIndex: "role"
+    dataIndex: "role",
+    scopedSlots: {
+      customRender: "role"
+    }
   },
   {
     title: "状态",

@@ -3,7 +3,7 @@ module.exports = app =>{
     const Host = require('./models').Host
 
     // 登陆验证中间件
-    const auth = require("../../../middleware/validateMiddleWare")
+    const {auth} = require("../../../middleware/validateMiddleWare")
     app.use('/api/host', auth(app),router)
 
     // 增 创建
@@ -33,7 +33,7 @@ module.exports = app =>{
     router.delete('/:id',async(req,res) => {
         try{
             const model = await Host.findByIdAndDelete(req.params.id)
-            console.log("删除_id:",req.params.id)
+            console.log("删除host _id:",req.params.id)
             res.send(model)
         }catch(error){
             res.status(400).send({message:'传入的参数有误'})
