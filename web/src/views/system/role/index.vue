@@ -15,7 +15,11 @@
         新建
       </a-button>
     </div>
-    <comTable />
+    <ComTable />
+    <ComForm />
+    <PagePerm />
+    <DeployPerm />
+    <HostPerm />
   </a-card>
 </template>
 
@@ -23,11 +27,15 @@
 import SearchForm from "../../../components/searchForm/SearchForm.vue";
 import SearchFormItem from "../../../components/searchForm/SearchFormItem.vue";
 import store from "./store.js"
-import comTable from "./Table.vue"
+import ComTable from "./Table.vue"
+import ComForm from "./Form.vue"
+import PagePerm from "./PagePerm.vue";
+import DeployPerm from "./DeployPerm.vue"
+import HostPerm from "./HostPerm.vue"
 
 export default {
   name: "Role",
-  components: { SearchForm, SearchFormItem, comTable },
+  components: { SearchForm, SearchFormItem, ComTable, ComForm, PagePerm, DeployPerm, HostPerm },
   data () {
     return {
       store: store
@@ -43,4 +51,28 @@ export default {
 </script>
 
 <style>
+.container :global(.ant-modal-footer) {
+  border-top: 0;
+}
+
+.table {
+  width: 100%;
+  border: 1px solid #dfdfdf;
+}
+
+.table :global(.ant-checkbox-group) {
+  width: 100%;
+}
+
+.table th {
+  background-color: #fafafa;
+  color: #404040;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 5px 15px;
+}
+
+.table td {
+  padding: 5px 15px;
+}
 </style>

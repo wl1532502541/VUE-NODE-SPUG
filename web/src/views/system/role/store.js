@@ -4,6 +4,9 @@ export default{
   record: {},
   isFetching: false,
   formVisible: false,
+  pagePermVisible:false,
+  deployPermVisible:false,
+  hostPermVisible:false,
 
   name_search:"",
 
@@ -17,5 +20,14 @@ export default{
   showForm (record = {}) {
     this.record = record
     this.formVisible = true
+  },
+  showPagePerm(record){
+    this.pagePermVisible = true
+  },
+  showDeployPerm(record){
+    this.deployPermVisible = true
+  },
+  showHostPerm(record){
+    this.hostPermVisible = true
   }
 }

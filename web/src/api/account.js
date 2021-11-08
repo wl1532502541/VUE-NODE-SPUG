@@ -37,6 +37,16 @@ export function getRoles(){
 export function deleteRole(_id){
     return $axios.delete('./api/account/role/'+_id)
 }
+
+export function addRole(data){
+    return $axios.post('./api/account/role',data)
+}
+
+export function patchRole(_id,data){
+    return $axios.patch('./api/account/role/'+_id,data)
+}
+// ROLE.PATCH
+
 //////////////////////////////////////////////////
 export function patchSelf(data){
     return $axios.patch('./api/account/self',data)

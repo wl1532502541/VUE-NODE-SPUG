@@ -165,8 +165,8 @@ module.exports = app => {
   router.get('/role', async(req, res) => {
     // const users = User.find({is_super:false}).populate('role')
     const roles = await Role.find()
-    console.log("roles",roles)
-    // res.send(roles)
+    console.log("get_roles",roles)
+    res.send(roles)
   })
 
   router.post('/role',async(req,res) => {
@@ -174,15 +174,27 @@ module.exports = app => {
       const role = await Role.create(req.body)
       console.log(role)
       res.send(role)
-      // arr = ["username","password","nickname","role_id"]
-      // const form = {}
-      // Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
-      //   form[key]=req.body[key]
-      // })
-      // if(!("username" in req.body) || req.body)
-      // res.send(req.body)
     }catch(error){
       res.status(400).send(error)
+    }
+  })
+
+  router.patch('/role/:_id',perm("admin"),async(req,res) => {
+    try{
+      const _id = req.params._id
+      // arr = ["username","nickname","password","is_active","role"]
+      arr = ["name","desc","page_perms","deploy_perms","host_perms"]
+      const form = {}
+      Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
+        form[key]=req.body[key]
+      })
+      if(!_id){
+        return res.status(400).send("请指定对象")
+      }
+      const role = await Role.findOneAndUpdate({_id:_id},form,{new:true})
+      res.send(role)
+    }catch(error){
+      res.status(400).send("catch-error",error)
     }
   })
 

@@ -16,6 +16,7 @@
 
 <script>
 import store from './store'
+import { deleteRole,  } from '../../../api/account'
 export default {
   name: 'role_Table',
   data () {
@@ -36,7 +37,21 @@ export default {
     },
   },
   methods: {
-
+    handleDelete (record) {
+      this.$confirm({
+        title: '删除确认',
+        okText: "确定",
+        cancelText: "取消",
+        content: `确定要删除【${record.name}】?`,
+        onOk: () => {
+          deleteRole(record._id).then(res => {
+            this.$message.success("删除成功")
+            store.formVisible = false
+            store.fetchRecords()
+          })
+        },
+      });
+    }
   }
 
 }
