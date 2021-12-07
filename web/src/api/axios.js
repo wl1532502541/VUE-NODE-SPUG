@@ -36,17 +36,16 @@ $axios.interceptors.response.use(
         }
     },
     error => {
-        console.dir(error)
         if(error.response){
             switch(error.response.status){
-                // case 401:
-                //     // 会话过期，要重新登陆
-                //     message.error('会话过期，重新登陆')
-                //     store.commit('user/delToken')
-                //     router.push({
-                //         path:'/login'
-                //     })
-                //     break;
+                case 401:
+                    // 会话过期，要重新登陆
+                    message.error('会话过期，重新登陆')
+                    store.commit('user/delToken')
+                    router.push({
+                        path:'/login'
+                    })
+                    break;
                 // case 404:
                 //     message.error('网络请求不存在')
                 //     break;
@@ -72,7 +71,6 @@ $axios.interceptors.response.use(
     }
     
 )
-
 export default $axios
 // export default {
 //     get(url,params){

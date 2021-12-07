@@ -1,7 +1,10 @@
 import { getRoles } from "../../../api/account"
+import codes from './codes'
+import lodash from 'lodash'
 export default{ 
   records: [],
   record: {},
+  permissions: lodash.cloneDeep(codes),
   isFetching: false,
   formVisible: false,
   pagePermVisible:false,

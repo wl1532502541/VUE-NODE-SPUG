@@ -16,14 +16,16 @@
       </thead>
       <tbody>
         <template v-for="(mod) in codes">
-          <tr v-for="(page,index) in mod.pages" :key="page.key">
+          <tr v-for="(page,index) in mod.pages" :key="'mod-'+mod.key+'.page-'+page.key">
             <td v-if="index==0" :rowspan="mod.pages.length">{{mod.label}}</td>
             <td>
-              <a-checkbox>{{page.label}}</a-checkbox>
+              <a-checkbox @change="handleAllCheck($event,mod.key,page.key)">{{page.label}}</a-checkbox>
             </td>
             <td>
               <a-row>
-
+                <a-col v-for="(perm,index) in page.perms" :key="'mod-'+mod.key+'.page-'+page.key+'.perm-'+perm.key" span="8">
+                  <a-checkbox @change="handlePermCheck($event,mod.key,page.key,perm.key)">{{perm.label}}</a-checkbox>
+                </a-col>
               </a-row>
             </td>
           </tr>
@@ -43,6 +45,14 @@ export default {
       loading: false,
       store,
       codes
+    }
+  },
+  methods: {
+    handleAllCheck (e, modKey, pageKey) {
+      console.log('e', e)
+    },
+    handlePermCheck (e, modKey, pageKey, permKey) {
+      console.log('e', e.target.checked)
     }
   }
 }

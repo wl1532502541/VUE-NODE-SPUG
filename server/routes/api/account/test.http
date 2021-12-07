@@ -1,0 +1,15 @@
+@host = http://localhost:3000
+@wrongToken = Bearer 123123
+@rightToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNzEzYTMwYjU4NmQzZmI3NjYxMzM3YyIsImlhdCI6MTYzNTkxMjA2MX0.uQVLXKmr9trRRzn5D-_Aj2uTEQ8l6SOVeJ6junI6xPk
+## 用户相关
+### 获取用户列表(无token)
+Get {{host}}/api/account/user
+
+### 获取用户列表(有错误token)
+Get {{host}}/api/account/user
+Authorization: {{wrongToken}}
+
+### 获取用户列表(有正确token)
+Get {{host}}/api/account/user
+Authorization: {{rightToken}}
+  
