@@ -19,9 +19,9 @@ exports.User = mongoose.model('User',User)
 const Role = new mongoose.Schema({
   name: {type:String},
   desc: {type:String},
-  page_perms: {type:String},
-  deploy_perms:{type:String},
-  host_perms:{type:String}
+  page_perms: {type:Object},
+  deploy_perms:{type:Object},
+  host_perms:{type:Object}
 })
 exports.Role = mongoose.model('Role',Role)
 

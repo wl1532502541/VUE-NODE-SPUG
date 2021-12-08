@@ -24,7 +24,7 @@
             <td>
               <a-row>
                 <a-col v-for="(perm,index) in page.perms" :key="'mod-'+mod.key+'.page-'+page.key+'.perm-'+perm.key" span="8">
-                  <a-checkbox @change="handlePermCheck($event,mod.key,page.key,perm.key)">{{perm.label}}</a-checkbox>
+                  <a-checkbox @change="handlePermCheck(mod.key,page.key,perm.key)" :checked="store.permissions[mod.key][page.key].includes(perm.key)">{{perm.label}}</a-checkbox>
                 </a-col>
               </a-row>
             </td>
@@ -38,6 +38,8 @@
 <script>
 import store from './store.js'
 import codes from "./codes"
+import lodash from 'lodash'
+import { patchRole } from '../../../api/account'
 export default {
   name: 'PagePerm',
   data () {
@@ -48,11 +50,32 @@ export default {
     }
   },
   methods: {
-    handleAllCheck (e, modKey, pageKey) {
-      console.log('e', e)
+    handleSubmit () {
+      this.loading = true
+      patchRole(this.store.record._id, { page_perms: this.store.permissions }).then(res => {
+        this.$message.success('操作成功')
+        this.store.pagePermVisible = false;
+        this.store.fetchRecords()
+      }, err => {
+        this.$message.fail('操作失败')
+      }).finally(() => { this.loading = false })
     },
-    handlePermCheck (e, modKey, pageKey, permKey) {
-      console.log('e', e.target.checked)
+    handleAllCheck (e, mod, page) {
+      const checked = e.target.checked;
+      if (checked) {
+        const key = `${mod}.${page}`
+        this.store.permissions[mod][page] = lodash.clone(this.store.allPerms[key])
+      } else {
+        this.store.permissions[mod][page] = []
+      }
+    },
+    handlePermCheck (mod, page, perm) {
+      const perms = this.store.permissions[mod][page];
+      if (perms.includes(perm)) {
+        perms.splice(perms.indexOf(perm), 1)
+      } else {
+        perms.push(perm)
+      }
     }
   }
 }

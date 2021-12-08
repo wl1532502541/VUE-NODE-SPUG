@@ -165,7 +165,6 @@ module.exports = app => {
   router.get('/role', async(req, res) => {
     // const users = User.find({is_super:false}).populate('role')
     const roles = await Role.find()
-    console.log("get_roles",roles)
     res.send(roles)
   })
 
@@ -182,7 +181,6 @@ module.exports = app => {
   router.patch('/role/:_id',perm("admin"),async(req,res) => {
     try{
       const _id = req.params._id
-      // arr = ["username","nickname","password","is_active","role"]
       arr = ["name","desc","page_perms","deploy_perms","host_perms"]
       const form = {}
       Object.keys(req.body).filter((key)=>arr.includes(key)).forEach((key)=>{
@@ -194,6 +192,7 @@ module.exports = app => {
       const role = await Role.findOneAndUpdate({_id:_id},form,{new:true})
       res.send(role)
     }catch(error){
+      console.log(error)
       res.status(400).send("catch-error",error)
     }
   })
